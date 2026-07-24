@@ -1,36 +1,134 @@
-# Gesture-Interaction-Robot-GIR-
-A computer vision and embedded systems project featuring real-time hand gesture recognition, smooth servo motion, voice feedback, and autonomous robot behaviors.
-An interactive humanoid robot controlled by hand gestures, sound, and sensors, combining computer vision, embedded systems, and human–robot interaction.
-This project uses Python + OpenCV + MediaPipe for real-time gesture recognition and an Arduino for smooth servo control, audio feedback, and autonomous behaviors.
+# Gesture Interaction Robot (GIR) 🤖
 
-🔹 Project Overview
-The system detects human hand gestures using a webcam and translates them into high-level commands.
-These commands are sent to an Arduino, which controls the robot’s hands, head, body, eyes, and audio responses.
-The robot can also turn on/off by double clap.
+A computer vision and embedded systems project focused on creating an interactive robot capable of understanding human gestures, responding through motion and sound, and performing autonomous behaviors.
 
-🧠 Features
-✋ Real-time hand gesture recognition (left & right hand detection)
-🧮 Finger counting–based control logic/serial commands
-🦾 Smooth, human-like servo movements using easing functions
-🎧 Voice & sound playback via DFPlayer Mini
-👀 Eye control + turn on/off with double clap 👏 Double-clap detection to trigger an introduction animation
-🤖 Head, body, and arm control through intuitive gestures
-🔄 Failsafe behavior when no hand is detected
+GIR combines **real-time computer vision, embedded control, servo-based motion systems, and human–robot interaction** to create a responsive robotic platform controlled through hand gestures, voice feedback, and environmental inputs.
 
-🛠 Technologies Used
-Software: Python, OpenCV, MediaPipe, PySerial. Hardware: Arduino Uno R3, Servo Motors (Hands, Head, Body), DFPlayer Mini (Audio module), Microphone Sensor (Clap detection), EEPROM (State memory)
+---
 
-🎮 Gesture Controls
-Gesture Action
-Right Hand = Raise / Lower right hand
-Left Hand = Raise / Lower left hand
-Right Hand + Index finger movement = Control robot head direction
-Right Hand + Thumb + Index = Rotate robot body
-Double clap turn off/on robot
+## 📌 Project Overview
 
-🧩 System Architecture
-Webcam captures live video
-Python processes frames using MediaPipe
-Gestures are converted to text commands
-Commands are sent via Serial (Bluetooth / USB)
-Arduino executes motion, sound, and sensor logic
+The GIR system uses a webcam to capture human hand movements and processes them using **Python, OpenCV, and MediaPipe** for real-time gesture recognition.
+
+Recognized gestures are converted into high-level commands and transmitted through serial communication to an **Arduino-based control system**.
+
+The Arduino manages the robot's physical behaviors, including:
+
+- Hand movement
+- Head rotation
+- Body movement
+- Eye interaction
+- Audio feedback
+- System state management
+
+The robot also supports **double-clap detection** for power control and interactive behaviors.
+
+---
+
+# ✨ Features
+
+## 👋 Computer Vision & Gesture Recognition
+
+- Real-time hand tracking using MediaPipe
+- Left and right hand detection
+- Finger counting-based command recognition
+- Gesture-to-command mapping
+- Fail-safe operation when no gesture is detected
+
+## 🤖 Robotic Motion Control
+
+- Smooth servo movements using motion easing techniques
+- Multi-servo coordination
+- Human-like movement patterns
+- Control of:
+  - Hands
+  - Head
+  - Body rotation
+  - Eyes
+
+## 🔊 Audio Interaction
+
+- Voice and sound playback
+- Audio feedback using DFPlayer Mini
+- Microphone-based clap detection
+- Double-clap activation system
+
+## 🔌 Communication System
+
+- Python-to-Arduino serial communication
+- USB / Bluetooth communication support
+- Real-time command transmission
+
+---
+
+# 🛠️ Technologies Used
+
+## Software
+
+| Technology | Purpose |
+|---|---|
+| Python | Main processing and control logic |
+| OpenCV | Computer vision processing |
+| MediaPipe | Hand tracking and gesture recognition |
+| PySerial | Communication with Arduino |
+
+## Hardware
+
+| Component | Purpose |
+|---|---|
+| Arduino Uno R3 | Main embedded controller |
+| Servo Motors | Robot movement |
+| DFPlayer Mini | Audio playback |
+| Microphone Sensor | Clap detection |
+| EEPROM | Memory and state storage |
+
+---
+
+# 🎮 Gesture Control Mapping
+
+| Gesture | Robot Action |
+|---|---|
+| Right hand raised | Control right hand movement |
+| Left hand raised | Control left hand movement |
+| Index finger movement | Control head direction |
+| Thumb + Index gesture | Rotate robot body |
+| Double clap | Turn robot system ON/OFF |
+
+---
+
+# ⚙️ System Architecture
+
+```
+                 Human Interaction
+                         |
+          ┌──────────────┴──────────────┐
+          |                             |
+       Webcam                     Voice / Sound
+          |                             |
+          ↓                             ↓
+   Python + OpenCV              Audio Processing
+   + MediaPipe
+          |
+          ↓
+ Gesture Recognition
+          |
+          ↓
+ Command Generation
+          |
+          ↓
+ Serial Communication
+          |
+          ↓
+ Arduino Controller
+          |
+ ┌────────┼────────┐
+ ↓        ↓        ↓
+Servo   Audio   Sensors
+System  System  System
+```
+# 👨‍💻 Developer
+**Unes Jami**
+Robotics • Embedded Systems • Artificial Intelligence
+
+# 📜 License
+This project is licensed under the MIT License.
