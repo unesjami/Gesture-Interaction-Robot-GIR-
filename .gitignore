@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# IDEs
+.idea/
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python cache / tooling
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Logs
+*.log
+
+# Local configuration
+.env
+.env.*
+!.env.example
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Local media / large files
+*.mov
+*.MOV
+*.mp4
+*.MP4

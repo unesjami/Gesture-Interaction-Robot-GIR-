@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>GIR — ارائه پروژه</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F3F7FC;
+    --ink:#0E1B2E;
+    --ink-dim:#3F4E63;
+    --ink-faint:#7C8A9C;
+    --accent:#2563EB;
+    --accent2:#06B6D4;
+    --accent-deep:#1D4ED8;
+    --danger:#DC2626;
+    --card:rgba(255,255,255,0.72);
+    --card-border:rgba(37,99,235,0.16);
+    --fa:'Vazirmatn','Segoe UI',Tahoma,sans-serif;
+    --en:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+
+  html,body{ width:100%; height:100%; overflow:hidden; }
+
+  body{
+    font-family:var(--fa);
+    color:var(--ink);
+    background:
+      radial-gradient(1100px 700px at 88% -8%, rgba(37,99,235,0.10), transparent 60%),
+      radial-gradient(900px 650px at 6% 108%, rgba(6,182,212,0.09), transparent 60%),
+      var(--bg);
+    position:relative;
+  }
+
+  ::selection{ background:var(--accent); color:#fff; }
+
+  .grid-overlay{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      linear-gradient(rgba(37,99,235,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(37,99,235,0.05) 1px, transparent 1px);
+    background-size:56px 56px;
+    -webkit-mask-image:radial-gradient(1200px 800px at 50% 30%, #000 10%, transparent 75%);
+    mask-image:radial-gradient(1200px 800px at 50% 30%, #000 10%, transparent 75%);
+  }
+
+  #deck{ position:relative; z-index:2; width:100vw; height:100vh; }
+
+  .slide{
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:6vh 7vw;
+    opacity:0; visibility:hidden;
+    transform:translateY(24px) scale(0.985);
+    transition:opacity .6s cubic-bezier(.22,.61,.36,1), transform .6s cubic-bezier(.22,.61,.36,1), visibility 0s linear .6s;
+  }
+  .slide.active{
+    opacity:1; visibility:visible; transform:translateY(0) scale(1);
+    transition:opacity .6s cubic-bezier(.22,.61,.36,1), transform .6s cubic-bezier(.22,.61,.36,1), visibility 0s linear 0s;
+  }
+
+  .eyebrow{
+    font-family:var(--en); font-weight:700; font-size:clamp(15px,1.35vw,18px);
+    letter-spacing:.24em; text-transform:uppercase; color:var(--accent);
+    margin-bottom:22px; display:flex; align-items:center; gap:12px;
+  }
+  .eyebrow .dash{ width:30px; height:3px; border-radius:2px; background:var(--accent); }
+
+  h1.title{
+    font-family:var(--fa); font-weight:800; font-size:clamp(32px,4.6vw,54px);
+    line-height:1.3; text-align:center; color:var(--ink); letter-spacing:0;
+  }
+  .sub{
+    font-family:var(--fa); font-weight:500; font-size:clamp(19px,2vw,23px);
+    color:var(--ink-dim); text-align:center; margin-top:18px; max-width:840px; line-height:2;
+  }
+
+  bdi, .en{ font-family:var(--en); font-weight:600; unicode-bidi:isolate; }
+
+  .glass{
+    background:var(--card); border:1px solid var(--card-border);
+    backdrop-filter:blur(16px) saturate(160%); -webkit-backdrop-filter:blur(16px) saturate(160%);
+    border-radius:22px;
+    box-shadow:0 20px 50px -25px rgba(37,99,235,0.25);
+  }
+
+  /* ---------- chrome ---------- */
+  .chrome{ position:fixed; z-index:5; bottom:28px; left:0; right:0; display:flex; align-items:center; justify-content:center; gap:12px; pointer-events:none; }
+  .dot{ width:11px; height:11px; border-radius:50%; background:transparent; border:2px solid rgba(37,99,235,0.35); transition:all .35s ease; }
+  .dot.active{ background:var(--accent); border-color:var(--accent); }
+  .slide-index{ position:fixed; z-index:5; bottom:27px; right:34px; font-family:var(--en); font-size:16px; font-weight:600; letter-spacing:.05em; color:var(--ink-faint); }
+  .fs-btn{
+    position:fixed; z-index:5; bottom:20px; left:28px; width:42px; height:42px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--card); border:1px solid var(--card-border); color:var(--ink-dim); cursor:pointer;
+    opacity:0.55; transition:all .3s ease;
+  }
+  .fs-btn:hover{ opacity:1; color:var(--accent); border-color:var(--accent); }
+  .fs-btn svg{ width:18px; height:18px; }
+
+  .hint{
+    position:fixed; z-index:5; bottom:78px; left:0; right:0; text-align:center;
+    font-family:var(--fa); font-size:16px; font-weight:500; color:var(--ink-faint);
+    opacity:1; transition:opacity 1s ease;
+  }
+  .hint.hidden{ opacity:0; }
+  .hint kbd{ display:inline-block; padding:3px 10px; margin:0 4px; border:1px solid var(--card-border); border-radius:7px; font-family:var(--en); font-size:14px; color:var(--accent); background:#fff; }
+
+  /* ================ SLIDE 1 — COVER ================ */
+  .logo-mark{
+    width:96px; height:96px; border-radius:26px; margin-bottom:36px;
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(150deg, var(--accent), var(--accent2));
+    box-shadow:0 25px 60px -18px rgba(37,99,235,0.55);
+  }
+  .logo-mark span{ font-family:var(--en); font-weight:800; font-size:30px; color:#fff; letter-spacing:0.02em; }
+  .cover-quote{
+    font-family:var(--fa); font-weight:700; font-size:clamp(25px,3.1vw,37px);
+    line-height:1.9; text-align:center; max-width:940px; color:var(--ink);
+  }
+  .cover-goal{
+    margin-top:38px; padding:22px 42px; border-radius:999px;
+    font-family:var(--fa); font-weight:800; font-size:clamp(19px,2vw,24px);
+    color:#fff; background:linear-gradient(120deg, var(--accent), var(--accent-deep));
+    box-shadow:0 20px 45px -15px rgba(37,99,235,0.5);
+  }
+  .cover-name{
+    margin-top:40px; font-family:var(--en); font-size:16px; font-weight:600; letter-spacing:.25em;
+    text-transform:uppercase; color:var(--ink-faint);
+  }
+
+  /* ================ SLIDE 2 — PROBLEM ================ */
+  .problem-wrap{ display:flex; gap:56px; align-items:stretch; justify-content:center; flex-wrap:wrap; max-width:1040px; margin-top:38px; width:100%; }
+  .problem-col{ flex:1; min-width:300px; display:flex; flex-direction:column; gap:14px; }
+  .neg-item{ display:flex; align-items:center; gap:16px; padding:22px 26px; }
+  .neg-item .x{ flex:none; width:36px; height:36px; border-radius:50%; background:rgba(220,38,38,0.1); color:var(--danger); display:flex; align-items:center; justify-content:center; font-size:17px; font-weight:800; }
+  .neg-item span{ font-family:var(--fa); font-weight:700; font-size:20px; color:var(--ink); }
+  .goal-box{ padding:38px 34px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:18px; }
+  .goal-box .lbl{ font-family:var(--en); font-weight:700; font-size:15px; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); }
+  .goal-box p{ font-family:var(--fa); font-weight:600; font-size:21px; line-height:2.05; color:var(--ink); }
+
+  /* ================ FLOW (solution / platform) ================ */
+  .flow{ display:flex; flex-direction:column; align-items:center; gap:0; margin-top:28px; }
+  .flow-node{ font-family:var(--fa); font-weight:700; font-size:20px; padding:17px 36px; min-width:260px; text-align:center; position:relative; z-index:2; color:var(--ink); }
+  .flow-node .en-tag{ display:block; font-family:var(--en); font-weight:600; font-size:14px; color:var(--ink-faint); margin-top:5px; letter-spacing:.04em; }
+  .flow-node.strong{ border-color:rgba(37,99,235,0.45); background:linear-gradient(150deg, rgba(37,99,235,0.08), rgba(6,182,212,0.06)); }
+  .flow-connector{ width:2.5px; height:32px; background:linear-gradient(180deg, var(--accent), rgba(37,99,235,0.15)); position:relative; }
+  .flow-connector::after{ content:''; position:absolute; left:50%; transform:translateX(-50%); bottom:-5px; width:0; height:0; border-left:6px solid transparent; border-right:6px solid transparent; border-top:7px solid var(--accent); }
+  .flow-connector .pulse{ position:absolute; left:50%; top:0; transform:translateX(-50%); width:7px; height:7px; border-radius:50%; background:var(--accent2); box-shadow:0 0 10px 3px rgba(6,182,212,0.6); animation:flowPulse 2.4s ease-in-out infinite; }
+  @keyframes flowPulse{ 0%{top:0;opacity:0;} 15%{opacity:1;} 85%{opacity:1;} 100%{top:100%;opacity:0;} }
+
+  /* ================ SLIDE 4 — AI ================ */
+  .ai-badges{ display:flex; gap:18px; flex-wrap:wrap; justify-content:center; margin-top:32px; max-width:720px; }
+  .ai-badge{ padding:17px 32px; font-family:var(--en); font-weight:700; font-size:19px; color:var(--accent-deep); }
+  .ai-line{ margin-top:34px; font-family:var(--fa); font-weight:700; font-size:clamp(20px,2.1vw,25px); text-align:center; color:var(--ink); max-width:780px; line-height:1.95; }
+
+  /* ================ SLIDE 5 — INNOVATION ================ */
+  .innov-grid{ display:flex; gap:16px; flex-wrap:wrap; justify-content:center; max-width:940px; margin-top:32px; }
+  .innov-chip{ padding:19px 28px; display:flex; align-items:center; gap:11px; }
+  .innov-chip .dot2{ width:9px; height:9px; border-radius:50%; background:var(--accent2); flex:none; }
+  .innov-chip span{ font-family:var(--en); font-weight:700; font-size:18px; color:var(--ink); }
+
+  /* ================ SLIDE 6 — APPLICATIONS ================ */
+  .app-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; max-width:1100px; margin-top:28px; width:100%; }
+  .app-card{ padding:28px 26px; text-align:right; }
+  .app-card .ic{ font-size:32px; margin-bottom:14px; }
+  .app-card h4{ font-family:var(--fa); font-weight:800; font-size:20px; color:var(--ink); margin-bottom:14px; }
+  .app-card ul{ list-style:none; display:flex; flex-direction:column; gap:9px; }
+  .app-card li{ font-family:var(--fa); font-weight:500; font-size:17px; color:var(--ink-dim); position:relative; padding-right:17px; }
+  .app-card li::before{ content:''; position:absolute; right:0; top:9px; width:5px; height:5px; border-radius:50%; background:var(--accent); }
+
+  /* ================ SLIDE 8 — ROADMAP ================ */
+  .roadmap{ display:flex; align-items:flex-start; justify-content:center; gap:0; max-width:1080px; margin-top:36px; flex-wrap:wrap; }
+  .rm-item{ display:flex; flex-direction:column; align-items:center; text-align:center; width:200px; position:relative; padding-top:8px; }
+  .rm-item .rm-dot{ width:15px; height:15px; border-radius:50%; background:#fff; border:2.5px solid var(--accent); margin-bottom:18px; position:relative; z-index:2; }
+  .rm-item .rm-line{ position:absolute; top:16px; right:50%; width:100%; height:1.5px; background:linear-gradient(90deg, rgba(37,99,235,0.15), var(--accent)); z-index:1; }
+  .rm-item:first-child .rm-line{ display:none; }
+  .rm-item .name{ font-family:var(--fa); font-size:18px; font-weight:700; color:var(--ink); line-height:1.5; }
+
+  /* ================ SLIDE 9 — MARKET ================ */
+  .market-tags{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; margin-top:32px; max-width:820px; }
+  .market-tag{ padding:16px 28px; font-family:var(--fa); font-weight:700; font-size:19px; color:var(--ink); }
+
+  /* ================ SLIDE 10 — CLOSING QUOTE ================ */
+  .closing-quote{ font-family:var(--fa); font-weight:700; font-size:clamp(22px,2.6vw,31px); line-height:2.05; text-align:center; max-width:920px; color:var(--ink); }
+  .closing-quote .hl{ color:var(--accent); }
+
+  /* ================ SLIDE 11 — Q&A BACKUP ================ */
+  #s11 .qa-flag{ font-family:var(--en); font-weight:700; font-size:14px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent2); border:1.5px dashed rgba(6,182,212,0.5); border-radius:999px; padding:10px 20px; margin-bottom:26px; }
+  .qa-card{ max-width:900px; padding:40px 46px; }
+  .qa-card p{ font-family:var(--fa); font-weight:500; font-size:19px; line-height:2.2; color:var(--ink-dim); text-align:justify; }
+
+  /* ================ SLIDE 12 — THANK YOU ================ */
+  #s12 .ty{ font-family:var(--fa); font-weight:900; font-size:clamp(42px,5.6vw,68px); color:var(--ink); }
+  #s12 .q{ font-family:var(--fa); font-weight:600; font-size:clamp(19px,1.9vw,23px); color:var(--ink-dim); margin-top:20px; }
+  #s12 .author{ margin-top:70px; text-align:center; }
+  #s12 .author .name{ font-family:var(--en); font-weight:800; font-size:20px; color:var(--accent-deep); }
+  #s12 .author .role{ font-family:var(--fa); font-weight:500; font-size:16px; letter-spacing:.02em; color:var(--ink-faint); margin-top:10px; }
+
+  @media (max-width:860px){
+    .problem-wrap{ flex-direction:column; align-items:center; }
+    .app-grid{ grid-template-columns:repeat(2,1fr); }
+  }
+  @media (prefers-reduced-motion:reduce){ *{ animation-duration:0.001ms !important; transition-duration:0.15s !important; } }
+</style>
+</head>
+<body>
+
+<div class="grid-overlay"></div>
+
+<div id="deck">
+
+  <!-- SLIDE 1 — COVER -->
+  <section class="slide" id="s1">
+    <div class="logo-mark"><span>GIR</span></div>
+    <p class="cover-quote">«این پروژه یک ربات تعاملی مبتنی بر <bdi>هوش مصنوعی</bdi> و <bdi>بینایی ماشین</bdi> است که می‌تواند حرکات دست انسان را در لحظه تشخیص دهد، آن‌ها را تحلیل کند و بدون نیاز به ریموت یا کنترلر با انسان تعامل داشته باشد.»</p>
+    <div class="cover-goal">هدف این پروژه، ساخت یک پلتفرم رباتیک هوشمند است؛ نه صرفاً یک ربات</div>
+    <div class="cover-name"><bdi>Gesture Interaction Robot</bdi></div>
+  </section>
+
+  <!-- SLIDE 2 — PROBLEM -->
+  <section class="slide" id="s2">
+    <div class="eyebrow"><span class="dash"></span>بیان مسئله</div>
+    <h1 class="title">امروزه بیشتر ربات‌های آموزشی یا صنعتی</h1>
+    <div class="problem-wrap">
+      <div class="problem-col">
+        <div class="neg-item glass"><span class="x">✕</span><span>نیاز به کنترلر دارند</span></div>
+        <div class="neg-item glass"><span class="x">✕</span><span>تعامل طبیعی با انسان ندارند</span></div>
+        <div class="neg-item glass"><span class="x">✕</span><span>برای افراد عادی پیچیده هستند</span></div>
+      </div>
+      <div class="problem-col">
+        <div class="goal-box glass" style="height:100%;">
+          <div class="lbl">هدف پروژه</div>
+          <p>هدف این پروژه، ساخت رباتی است که انسان بتواند مانند تعامل با یک انسان دیگر، با آن ارتباط برقرار کند.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3 — SOLUTION -->
+  <section class="slide" id="s3">
+    <div class="eyebrow"><span class="dash"></span>راهکار پیشنهادی</div>
+    <h1 class="title">از دیدن دست تا حرکت ربات</h1>
+    <div class="flow">
+      <div class="flow-node glass">دوربین، حرکات دست را ثبت و شناسایی می‌کند</div>
+      <div class="flow-connector"><div class="pulse"></div></div>
+      <div class="flow-node glass">دستور کاربر تحلیل و تعیین می‌شود</div>
+      <div class="flow-connector"><div class="pulse"></div></div>
+      <div class="flow-node glass">فرمان به برد <bdi>Arduino</bdi> ارسال می‌شود</div>
+      <div class="flow-connector"><div class="pulse"></div></div>
+      <div class="flow-node glass">ربات حرکت متناظر را اجرا می‌کند</div>
+      <div class="flow-connector"><div class="pulse"></div></div>
+      <div class="flow-node glass strong">در صورت نیاز، پاسخ صوتی نیز ارائه می‌شود</div>
+    </div>
+  </section>
+
+  <!-- SLIDE 4 — AI -->
+  <section class="slide" id="s4">
+    <div class="eyebrow"><span class="dash"></span>زیرساخت هوش مصنوعی</div>
+    <h1 class="title">هسته پردازشی پروژه</h1>
+    <p class="sub">هسته اصلی این پروژه بر پردازش تصویر و هوش مصنوعی استوار است</p>
+    <div class="ai-badges">
+      <div class="ai-badge glass"><bdi>Computer Vision</bdi></div>
+      <div class="ai-badge glass"><bdi>MediaPipe</bdi></div>
+      <div class="ai-badge glass"><bdi>OpenCV</bdi></div>
+    </div>
+    <p class="ai-line">ربات محیط را مشاهده می‌کند، اطلاعات را تحلیل می‌کند و سپس تصمیم‌گیری می‌کند.</p>
+  </section>
+
+  <!-- SLIDE 5 — INNOVATION -->
+  <section class="slide" id="s5">
+    <div class="eyebrow"><span class="dash"></span>نوآوری پروژه</div>
+    <h1 class="title">نوآوری، صرفاً در استفاده از دوربین نیست</h1>
+    <p class="sub">بلکه در ترکیب هم‌زمان موارد زیر در یک سیستم واحد نهفته است</p>
+    <div class="innov-grid">
+      <div class="innov-chip glass"><span class="dot2"></span><span><bdi>Computer Vision</bdi></span></div>
+      <div class="innov-chip glass"><span class="dot2"></span><span><bdi>Embedded Systems</bdi></span></div>
+      <div class="innov-chip glass"><span class="dot2"></span><span><bdi>Human Robot Interaction</bdi></span></div>
+      <div class="innov-chip glass"><span class="dot2"></span><span><bdi>Gesture Recognition</bdi></span></div>
+      <div class="innov-chip glass"><span class="dot2"></span><span><bdi>Voice Interaction</bdi></span></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 6 — APPLICATIONS -->
+  <section class="slide" id="s6">
+    <div class="eyebrow"><span class="dash"></span>حوزه‌های کاربرد</div>
+    <h1 class="title" style="margin-bottom:8px;">این فناوری کجا ارزش می‌آفریند</h1>
+    <div class="app-grid">
+      <div class="app-card glass">
+        <div class="ic">🎓</div><h4>آموزشی</h4>
+        <ul><li>مدارس</li><li>دانشگاه‌ها</li><li>آموزش برنامه‌نویسی</li></ul>
+      </div>
+      <div class="app-card glass">
+        <div class="ic">🎪</div><h4>نمایشگاهی</h4>
+        <ul><li>نمایشگاه‌های فناوری</li><li>جذب بازدیدکننده</li><li>تبلیغات</li></ul>
+      </div>
+      <div class="app-card glass">
+        <div class="ic">🛎️</div><h4>خدمات</h4>
+        <ul><li>راهنمای موزه</li><li>پذیرش هتل</li><li>اطلاع‌رسانی در بیمارستان</li><li>استقبال از مشتری</li></ul>
+      </div>
+      <div class="app-card glass">
+        <div class="ic">♿</div><h4>کمک به افراد دارای معلولیت</h4>
+        <ul><li>افرادی که توانایی صحبت‌کردن ندارند</li><li>افرادی که توانایی حرکت محدود دارند</li></ul>
+      </div>
+      <div class="app-card glass">
+        <div class="ic">🏠</div><h4>خانه هوشمند</h4>
+        <ul><li>کنترل وسایل خانه</li><li>فرمان صوتی</li><li><bdi>Gesture Control</bdi></li></ul>
+      </div>
+      <div class="app-card glass">
+        <div class="ic">🔐</div><h4>امنیت</h4>
+        <ul><li>تشخیص افراد</li><li>کنترل ورود</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 7 — ECONOMIC VALUE / PLATFORM -->
+  <section class="slide" id="s7">
+    <div class="eyebrow"><span class="dash"></span>ارزش اقتصادی پروژه</div>
+    <h1 class="title" style="margin-bottom:8px;">یک فناوری، چند محصول</h1>
+    <p class="sub">این پروژه صرفاً یک ربات نیست؛ بلکه یک پلتفرم فناوری (<bdi>Technology Platform</bdi>) است</p>
+    <div class="flow" style="margin-top:22px;">
+      <div class="flow-node glass strong">پلتفرم فناوری <span class="en-tag">Technology Platform</span></div>
+      <div class="flow-connector"><div class="pulse"></div></div>
+      <div class="flow-node glass"><bdi>Robot Receptionist</bdi></div>
+      <div class="flow-connector"><div class="pulse"></div></div>
+      <div class="flow-node glass"><bdi>Smart Assistant</bdi></div>
+      <div class="flow-connector"><div class="pulse"></div></div>
+      <div class="flow-node glass"><bdi>Educational Robot</bdi></div>
+      <div class="flow-connector"><div class="pulse"></div></div>
+      <div class="flow-node glass"><bdi>Industrial Assistant</bdi></div>
+      <div class="flow-connector"><div class="pulse"></div></div>
+      <div class="flow-node glass"><bdi>Smart Home Robot</bdi></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 8 — IF FUNDED -->
+  <section class="slide" id="s8">
+    <div class="eyebrow"><span class="dash"></span>برنامه توسعه</div>
+    <h1 class="title" style="margin-bottom:6px;">از نمونه اولیه تا محصول تجاری</h1>
+    <p class="sub">در حال حاضر این نسخه یک نمونه اولیه (<bdi>Prototype</bdi>) است؛ با حمایت مناسب، مراحل زیر قابل انجام است</p>
+    <div class="roadmap">
+      <div class="rm-item"><div class="rm-line"></div><div class="rm-dot"></div><div class="name">طراحی صنعتی</div></div>
+      <div class="rm-item"><div class="rm-line"></div><div class="rm-dot"></div><div class="name">طراحی برد اختصاصی</div></div>
+      <div class="rm-item"><div class="rm-line"></div><div class="rm-dot"></div><div class="name">توسعه هوش مصنوعی</div></div>
+      <div class="rm-item"><div class="rm-line"></div><div class="rm-dot"></div><div class="name">افزودن تشخیص صدا</div></div>
+      <div class="rm-item"><div class="rm-line"></div><div class="rm-dot"></div><div class="name">تولید نسخه تجاری</div></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 9 — MARKET -->
+  <section class="slide" id="s9">
+    <div class="eyebrow"><span class="dash"></span>بازار هدف</div>
+    <h1 class="title" style="margin-bottom:8px;">بازار هدف، محدود به افغانستان نیست</h1>
+    <p class="sub">این فناوری قابلیت استفاده در موارد زیر را دارد</p>
+    <div class="market-tags">
+      <div class="market-tag glass">دانشگاه‌ها</div>
+      <div class="market-tag glass">شرکت‌های آموزشی</div>
+      <div class="market-tag glass">مراکز تحقیقاتی</div>
+      <div class="market-tag glass">نمایشگاه‌های فناوری</div>
+      <div class="market-tag glass" style="border-color:rgba(37,99,235,0.4);">بازار بین‌المللی</div>
+    </div>
+  </section>
+
+  <!-- SLIDE 10 — CLOSING -->
+  <section class="slide" id="s10">
+    <div class="eyebrow"><span class="dash"></span>جمع‌بندی</div>
+    <p class="closing-quote">«هدف این پروژه، تنها ساخت یک ربات نبود؛ هدف، ایجاد یک <span class="hl">پلتفرم رباتیک هوشمند</span> است که بتواند پایه‌ای برای نسل آینده ربات‌های تعاملی، آموزشی و خدماتی باشد. با حمایت مناسب، این نمونه اولیه می‌تواند به یک محصول واقعی و قابل عرضه در بازار تبدیل شود.»</p>
+  </section>
+
+  <!-- SLIDE 11 — Q&A BACKUP -->
+  <section class="slide" id="s11">
+    <div class="qa-flag">آماده برای پرسش و پاسخ</div>
+    <div class="eyebrow"><span class="dash"></span>چرا این پروژه ارزش سرمایه‌گذاری دارد؟</div>
+    <div class="qa-card glass">
+      <p>ارزش اصلی پروژه در سخت‌افزار آن نیست، بلکه در فناوری و نرم‌افزاری است که توسعه داده شده است. سیستم تشخیص ژست، تعامل انسان و ربات، و کنترل هوشمند را می‌توان در محصولات مختلف به کار برد. این یعنی یک فناوری قابل توسعه و تجاری‌سازی، نه صرفاً یک نمونه آزمایشی. با سرمایه‌گذاری برای طراحی صنعتی، توسعه نرم‌افزار و تولید، این فناوری می‌تواند به ربات‌های آموزشی، خدماتی و هوشمند تبدیل شود و علاوه بر ایجاد اشتغال، ظرفیت صادرات فناوری را نیز داشته باشد.</p>
+    </div>
+  </section>
+
+  <!-- SLIDE 12 — THANK YOU -->
+  <section class="slide" id="s12">
+    <div class="eyebrow"><span class="dash"></span>پایان ارائه</div>
+    <div class="ty">با تشکر از توجه شما</div>
+    <div class="q">آماده پاسخ‌گویی به پرسش‌های شما هستم</div>
+    <div class="author">
+      <div class="name"><bdi>GIR — Gesture Interaction Robot</bdi></div>
+      <div class="role">رباتیک · سیستم‌های نهفته · هوش مصنوعی</div>
+    </div>
+  </section>
+
+</div>
+
+<div class="hint" id="hint">با کلیدهای <kbd>←</kbd> <kbd>→</kbd> بین اسلایدها حرکت کنید&nbsp; ·&nbsp; <kbd>F</kbd> تمام‌صفحه</div>
+<div class="chrome" id="dots"></div>
+<div class="slide-index" id="slideIndex">۰۱ / ۱۲</div>
+<div class="fs-btn" id="fsBtn" title="تمام صفحه">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3"/>
+  </svg>
+</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let idx = 0;
+  const faDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+  function toFa(n){ return String(n).split('').map(d => faDigits[+d] || d).join(''); }
+  function pad(n){ return n<10 ? '0'+n : ''+n; }
+
+  const dotsWrap = document.getElementById('dots');
+  slides.forEach((_,i)=>{
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===0 ? ' active':'');
+    dotsWrap.appendChild(d);
+  });
+  const dots = Array.from(dotsWrap.children);
+  const slideIndexEl = document.getElementById('slideIndex');
+  const hintEl = document.getElementById('hint');
+
+  function render(newIdx){
+    if(newIdx < 0 || newIdx >= total || newIdx === idx) return;
+    slides[idx].classList.remove('active');
+    idx = newIdx;
+    slides[idx].classList.add('active');
+    dots.forEach((d,i)=> d.classList.toggle('active', i===idx));
+    slideIndexEl.textContent = toFa(pad(idx+1)) + ' / ' + toFa(pad(total));
+    if(idx !== 0 && !hintEl.classList.contains('hidden')) hintEl.classList.add('hidden');
+  }
+  function next(){ render(idx+1); }
+  function prev(){ render(idx-1); }
+
+  slides[0].classList.add('active');
+
+  window.addEventListener('keydown', (e)=>{
+    if(e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown'){ e.preventDefault(); next(); }
+    else if(e.key === 'ArrowLeft' || e.key === 'PageUp'){ e.preventDefault(); prev(); }
+    else if(e.key === 'f' || e.key === 'F'){ toggleFullscreen(); }
+    else if(e.key === 'Home'){ render(0); }
+    else if(e.key === 'End'){ render(total-1); }
+  });
+
+  let touchX = null;
+  window.addEventListener('touchstart', e=>{ touchX = e.touches[0].clientX; });
+  window.addEventListener('touchend', e=>{
+    if(touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    if(Math.abs(dx) > 50){ dx < 0 ? prev() : next(); }
+    touchX = null;
+  });
+
+  function toggleFullscreen(){
+    if(!document.fullscreenElement){ document.documentElement.requestFullscreen().catch(()=>{}); }
+    else{ document.exitFullscreen(); }
+  }
+  document.getElementById('fsBtn').addEventListener('click', toggleFullscreen);
+
+  setTimeout(()=> hintEl.classList.add('hidden'), 6000);
+})();
+</script>
+
+</body>
+</html>
