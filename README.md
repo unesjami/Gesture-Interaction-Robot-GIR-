@@ -149,7 +149,7 @@ pip install -r requirements.txt
 Connect the Arduino and robot hardware according to the schematic located in:
 
 ```text
-hardware/gir_schematic.jpg
+hardware/
 ```
 
 ### 4. Configure the serial connection
