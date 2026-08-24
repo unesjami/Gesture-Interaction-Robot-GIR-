@@ -1,3 +1,5 @@
-opencv-python
+Python Libraries:
+
+opencv
 mediapipe
 pyserial
