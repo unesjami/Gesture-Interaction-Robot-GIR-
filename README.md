@@ -190,7 +190,7 @@ See [`media/README.md`](media/README.md) for details.
 
 The current robot circuit schematic is available here:
 
-[`hardware/gir_schematic.jpg`](hardware/gir_schematic.jpg)
+[`schematic/`](schematic/)
 
 ---
 
