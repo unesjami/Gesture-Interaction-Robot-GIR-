@@ -1,227 +1,109 @@
-# 🤖 Gesture Interaction Robot (GIR)
+# Gesture Interaction Robot (GIR)
 
-> **A computer vision and embedded systems project featuring real-time hand gesture recognition, smooth servo motion, voice feedback, and autonomous robot behaviors.**
+<p align="center">
+  <strong>Computer vision, embedded control, and natural hand-gesture interaction in one humanoid robotics project.</strong>
+</p>
 
-GIR is an interactive humanoid robot that combines **computer vision, embedded systems, servo control, audio feedback, and human–robot interaction**.
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-OpenCV-2563eb?style=for-the-badge" alt="Python and OpenCV">
+  <img src="https://img.shields.io/badge/Arduino-Embedded-0891b2?style=for-the-badge" alt="Arduino">
+  <img src="https://img.shields.io/badge/MediaPipe-Gesture_AI-7c3aed?style=for-the-badge" alt="MediaPipe">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-14b8a6?style=for-the-badge" alt="MIT license"></a>
+</p>
 
-The system uses a webcam to recognize hand gestures with **Python, OpenCV, and MediaPipe**, then sends high-level commands to an **Arduino** for real-time robot movement and behavior.
+![Gesture Interaction Robot](media/photos/GIR%20Photos.jpg)
 
----
+## Overview
 
-## ✨ Features
+GIR is an interactive humanoid robot that recognizes hand gestures with Python, OpenCV, and MediaPipe, then sends high-level commands to an Arduino for physical movement, lighting, and audio feedback.
 
-* 🖐️ Real-time left and right hand gesture recognition
-* 👆 Finger-count-based gesture control
-* 🤖 Head, body, and arm movement
-* ⚙️ Smooth servo motion with easing
-* 🔊 Voice and sound feedback using DFPlayer Mini
-* 👀 Robot eye control
-* 👏 Double-clap detection
-* 💾 EEPROM-based state memory
-* 🛡️ Failsafe behavior when no hand is detected
-* 🔌 Serial communication between Python and Arduino
+## Highlights
 
----
+- Real-time left- and right-hand tracking
+- Finger-count and gesture-based controls
+- Smooth eased motion for arms, head, and body
+- Serial communication between Python and Arduino
+- DFPlayer Mini voice and sound feedback
+- Eye control and double-clap interaction
+- EEPROM state memory
+- Failsafe behavior when tracking is lost
 
-## 🧠 System Architecture
+## Architecture
 
-```text
-             ┌──────────────────┐
-             │      Webcam      │
-             └────────┬─────────┘
-                      │
-                      ▼
-             ┌──────────────────┐
-             │ Python + OpenCV  │
-             │    MediaPipe     │
-             └────────┬─────────┘
-                      │
-               Gesture Commands
-                      │
-                      ▼
-             ┌──────────────────┐
-             │ Serial / USB /   │
-             │    Bluetooth     │
-             └────────┬─────────┘
-                      │
-                      ▼
-             ┌──────────────────┐
-             │   Arduino Uno    │
-             └────────┬─────────┘
-                      │
-          ┌───────────┼───────────┐
-          ▼           ▼           ▼
-       Servos       Audio       Sensors
-       & Eyes     DFPlayer      & State
+```mermaid
+flowchart TD
+    A[Webcam] --> B[Python controller]
+    B --> C[OpenCV + MediaPipe]
+    C --> D[Serial commands]
+    D --> E[Arduino Uno]
+    E --> F[Servos and eyes]
+    E --> G[DFPlayer audio]
+    E --> H[Sensors and state]
 ```
 
----
+## Gesture controls
 
-## 🎮 Gesture Controls
+| Input | Robot action |
+|---|---|
+| Right hand | Raise or lower the right arm |
+| Left hand | Raise or lower the left arm |
+| Right index finger | Control head direction |
+| Right thumb and index | Rotate the body |
+| Double clap | Toggle power or trigger behavior |
 
-| Gesture                    | Action                                |
-| -------------------------- | ------------------------------------- |
-| Right hand                 | Raise / lower right hand              |
-| Left hand                  | Raise / lower left hand               |
-| Right hand + index         | Control head direction                |
-| Right hand + thumb + index | Rotate robot body                     |
-| Double clap                | Turn robot on/off or trigger behavior |
+## Repository structure
 
----
+```text
+├── src/
+│   ├── python/gir_controller.py
+│   └── arduino/gir_arduino.ino
+├── models/hand_landmarker.task
+├── assets/voice/
+├── hardware/hardware.md
+├── schematic/
+├── docs/presentation.html
+└── media/
+    ├── photos/
+    └── video/
+```
 
-## 🛠️ Technologies
+## Setup
 
 ### Software
-
-* Python
-* OpenCV
-* MediaPipe
-* PySerial
-
-### Hardware
-
-* Arduino Uno R3
-* Servo motors
-* DFPlayer Mini
-* Microphone sensor
-* EEPROM
-* Robot eye system
-
----
-
-## 📁 Project Structure
-
-```text
-GIR/
-│
-├── README.md
-├── LICENSE
-├── .gitignore
-├── requirements.txt
-│
-├── src/
-│   ├── python/
-│   │   └── gir_controller.py
-│   │
-│   └── arduino/
-│       └── gir_arduino.ino
-│
-├── models/
-│   └── hand_landmarker.task
-│
-├── assets/
-│   ├── voice/
-│   │   ├── 0001.mp3
-│   │   ├── 0002.mp3
-│   │   └── ...
-│   │
-│   └── images/
-│
-├── hardware/
-│   └── gir_schematic.jpg
-│
-├── docs/
-│   └── presentation.html
-│
-└── media/
-    └── README.md
-```
-
----
-
-## 🚀 Getting Started
-
-### 1. Clone the repository
 
 ```bash
 git clone https://github.com/unesjami/Gesture-Interaction-Robot-GIR-.git
 cd Gesture-Interaction-Robot-GIR-
-```
-
-### 2. Install Python dependencies
-
-```bash
+python -m venv .venv
 pip install -r requirements.txt
 ```
 
-### 3. Connect the hardware
-
-Connect the Arduino and robot hardware according to the schematic located in:
-
-```text
-hardware/
-```
-
-### 4. Configure the serial connection
-
-Open:
-
-```text
-src/python/gir_controller.py
-```
-
-Update the Arduino serial port if necessary:
-
-```python
-arduino = serial.Serial('COM5', 9600)
-```
-
-### 5. Run the Python controller
+Review the serial-port setting in `src/python/gir_controller.py`, connect the Arduino, and run:
 
 ```bash
 python src/python/gir_controller.py
 ```
 
----
+Upload `src/arduino/gir_arduino.ino` to the Arduino separately through the Arduino IDE.
 
-## 📸 Project Media
+### Hardware
 
-Project photos and additional media are organized inside:
+Use the files in [schematic](schematic/) and [hardware](hardware/) as the wiring reference. Confirm every servo has adequate power and a shared ground before enabling motion.
 
-```text
-media/
-```
+## Media and presentation
 
-See [`media/README.md`](media/README.md) for details.
+- [Demonstration video](media/video/GIR%20video.mp4)
+- [Project presentation](docs/presentation.html)
+- [KiCad schematic](schematic/GIR%20schematic.kicad_sch)
 
----
+## Safety
 
-## 📐 Hardware Schematic
+Disconnect power before rewiring. Do not power multiple servos from the Arduino 5 V pin; use a suitable external supply and connect grounds together.
 
-The current robot circuit schematic is available here:
+## License
 
-[`schematic/`](schematic/)
+Released under the [MIT License](LICENSE).
 
----
+## Author
 
-## 🎤 Presentation
-
-A project presentation is available at:
-
-[`docs/presentation.html`](docs/presentation.html)
-
-Open the HTML file in a browser to view the presentation.
-
----
-
-## 🎯 Project Goals
-
-GIR was developed to explore the integration of:
-
-* Computer vision
-* Human–robot interaction
-* Embedded systems
-* Servo control
-* Gesture recognition
-* Audio feedback
-* Sensor-based interaction
-
-The project demonstrates how software and hardware can work together to create a more natural method of interacting with robots.
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License**.
-
-See [`LICENSE`](LICENSE) for details.
+Created by [Unes Jami](https://github.com/unesjami).
